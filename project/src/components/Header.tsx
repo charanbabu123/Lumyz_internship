@@ -39,9 +39,6 @@ export function Header() {
             whileHover={{ scale: 1.05 }}
           >
             <div className="flex space-x-1">
-              <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
-              <Activity className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
-              <Sprout className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
             </div>
             <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-green-600 to-purple-600 text-transparent bg-clip-text">
               Lumyz

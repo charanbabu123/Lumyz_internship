@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, AuthError } from "@supabase/supabase-js";
 import { supabase, Profile } from "../lib/supabase";
+import { UserType } from "../types/supabase";
 
 interface AuthContextType {
   user: User | null;
@@ -9,7 +10,15 @@ interface AuthContextType {
   signUp: (
     email: string,
     password: string,
-    fullName?: string
+    fullName?: string,
+    userType?: UserType,
+    additionalData?: {
+      studentId?: string;
+      employeeId?: string;
+      department?: string;
+      specialization?: string;
+      yearOfStudy?: number;
+    }
   ) => Promise<{ error: AuthError | null }>;
   signIn: (
     email: string,
@@ -79,13 +88,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const signUp = async (email: string, password: string, fullName?: string) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    fullName?: string,
+    userType: UserType = "student",
+    additionalData?: {
+      studentId?: string;
+      employeeId?: string;
+      department?: string;
+      specialization?: string;
+      yearOfStudy?: number;
+    }
+  ) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           full_name: fullName,
+          user_type: userType,
+          ...additionalData,
         },
       },
     });

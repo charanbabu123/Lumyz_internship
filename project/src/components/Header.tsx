@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, LogIn } from "lucide-react";
-import { NavLink } from "./NavLink";
+import { Link, useLocation } from "react-router-dom";
 import { LoginModal } from "./Auth/LoginModal";
 import { UserDropdown } from "./Auth/UserDropdown";
 import { useAuth } from "../contexts/AuthContext";
@@ -10,6 +10,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const location = useLocation();
 
   const { user, loading } = useAuth();
 
@@ -22,13 +23,17 @@ export function Header() {
   }, []);
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Services", href: "#services" },
-    { name: "Industries", href: "#industries" },
-    { name: "Blog", href: "#blog" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Services", href: "/services" },
+    { name: "Industries", href: "/industries" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ];
+
+  const isActiveLink = (href: string) => {
+    return location.pathname === href;
+  };
 
   return (
     <>
@@ -45,17 +50,36 @@ export function Header() {
               className="flex items-center space-x-2"
               whileHover={{ scale: 1.05 }}
             >
-              <div className="flex space-x-1"></div>
-              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-green-600 to-purple-600 text-transparent bg-clip-text">
-                Lumyz
-              </span>
+              <Link to="/" className="flex items-center space-x-2">
+                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-green-600 to-purple-600 text-transparent bg-clip-text">
+                  Lumyz
+                </span>
+              </Link>
             </motion.div>
 
             <nav className="hidden md:flex space-x-6 lg:space-x-8">
               {navItems.map((item) => (
-                <NavLink key={item.name} href={item.href}>
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                    isActiveLink(item.href)
+                      ? "text-blue-600"
+                      : isScrolled
+                      ? "text-gray-700 hover:text-blue-600"
+                      : "text-white hover:text-blue-200"
+                  }`}
+                >
                   {item.name}
-                </NavLink>
+                  {isActiveLink(item.href) && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                </Link>
               ))}
             </nav>
 
@@ -110,13 +134,17 @@ export function Header() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <NavLink
-                      href={item.href}
-                      className="block py-3 text-center text-lg"
+                    <Link
+                      to={item.href}
+                      className={`block py-3 text-center text-lg transition-colors ${
+                        isActiveLink(item.href)
+                          ? "text-blue-600 font-semibold"
+                          : "text-gray-700 hover:text-blue-600"
+                      }`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.name}
-                    </NavLink>
+                    </Link>
                   </motion.div>
                 ))}
 

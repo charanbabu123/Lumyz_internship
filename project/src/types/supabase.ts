@@ -12,27 +12,48 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null;
+          created_at: string | null;
+          department: string | null;
+          employee_id: string | null;
           full_name: string | null;
           id: string;
+          specialization: string | null;
+          student_id: string | null;
           updated_at: string | null;
+          user_type: Database["public"]["Enums"]["user_type"];
           username: string | null;
           website: string | null;
+          year_of_study: number | null;
         };
         Insert: {
           avatar_url?: string | null;
+          created_at?: string | null;
+          department?: string | null;
+          employee_id?: string | null;
           full_name?: string | null;
           id: string;
+          specialization?: string | null;
+          student_id?: string | null;
           updated_at?: string | null;
+          user_type?: Database["public"]["Enums"]["user_type"];
           username?: string | null;
           website?: string | null;
+          year_of_study?: number | null;
         };
         Update: {
           avatar_url?: string | null;
+          created_at?: string | null;
+          department?: string | null;
+          employee_id?: string | null;
           full_name?: string | null;
           id?: string;
+          specialization?: string | null;
+          student_id?: string | null;
           updated_at?: string | null;
+          user_type?: Database["public"]["Enums"]["user_type"];
           username?: string | null;
           website?: string | null;
+          year_of_study?: number | null;
         };
         Relationships: [];
       };
@@ -44,7 +65,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      user_type: "student" | "faculty" | "admin";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -80,3 +101,5 @@ export type Tables<
     ? R
     : never
   : never;
+
+export type UserType = Database["public"]["Enums"]["user_type"];
